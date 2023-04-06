@@ -31,6 +31,8 @@ stimulus2_image_numbers = [9,10,11]
 # normalize stimulus 1 images with the average of preceding baseline
 # take average of stimulus 1 images and assigning into a bucket
 
+
+
 # normalize stimulus 2 images with the average of preceding baseline
 # take average of stimulus 2 images and assigning into a bucket
 
@@ -42,7 +44,7 @@ stimulus2_image_numbers = [9,10,11]
 
 
 # Open the TIFF image file
-tiff_img = Image.open("images/0031.tif")
+tiff_img = Image.open("images/0016.tiff")
 
 # Get information about the image
 print("Image format:", tiff_img.format)
@@ -59,5 +61,6 @@ I = np.reshape(ar_values,(tiff_img.size[1],tiff_img.size[0]))
 plt.figure()
 plt.imshow(I)
 plt.show()
+print(ar_values)
 
 #print("Pixel values:", ar_values)
