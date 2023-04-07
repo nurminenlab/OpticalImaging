@@ -18,6 +18,7 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 # parameter -> images per stimulus 
 
 
@@ -43,24 +44,38 @@ stimulus2_image_numbers = [9,10,11]
 # subtract 
 
 
-# Open the TIFF image file
-tiff_img = Image.open("images/0016.tiff")
+# Open the TIFF image
+image = Image.open('images/0015.tiff')
 
-# Get information about the image
-print("Image format:", tiff_img.format)
-print("Image size:", tiff_img.size)
-print("Image mode:", tiff_img.mode)
+# Convert the image to a NumPy array
+image_np = np.array(image)
 
-# Show the image
-#tiff_img.show()
+# View the image
+#Image.fromarray(image_np).show()
+#print(image_np)
 
-# Access the pixel values of the image
-pixel_values = list(tiff_img.getdata())
-ar_values = np.array(pixel_values, 'uint16')
-I = np.reshape(ar_values,(tiff_img.size[1],tiff_img.size[0]))
-plt.figure()
-plt.imshow(I)
-plt.show()
-print(ar_values)
+i = 0
+baseLine_SC1 = []
+SC1 = []
+baseLine_SC2 = []
+SC2 = []
+node = baseLine_SC1
 
-#print("Pixel values:", ar_values)
+while i<8:
+    print(node)
+    if node == baseLine_SC1:
+        node = SC1
+    elif node == SC1:
+        node = baseLine_SC2
+    elif node == baseLine_SC2:
+        node = SC2
+    elif node == SC2:
+        node = baseLine_SC1
+
+    i+=1
+
+def appendNitems(file_dir,pos_of_item,n,list_l):
+    for i in range(n):
+        list_l.append(file_dir[pos_of_item + i])
+
+    # might have to return pos_of_item  - SA
