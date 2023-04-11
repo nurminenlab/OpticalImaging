@@ -31,6 +31,8 @@ baseLine_SC2 = []
 SC2 = []
 node = baseLine_SC1
 
+# max files
+
 # iterate over the folder to monitor the newly created files
 while True:
     files = os.listdir('images')
@@ -42,6 +44,12 @@ while True:
     # print only new file
     for tiff_file in new_files:
         print(f"New file created: {tiff_file}")
+
+    # read tiff_file and convert into an array
+    # then check file number
+    # if file number in A then do this 
+    # elseif  file number in B then do that
+    
 
     # old files update
     existing_files.update(tiff_files)
