@@ -1,4 +1,4 @@
-import sys
+'''import sys
 import time
 import logging
 from watchdog.observers import Observer
@@ -19,4 +19,31 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         observer.stop()
 
-    observer.join()
+    observer.join()'''
+
+import os
+import time
+
+existing_files = set()
+baseLine_SC1 = []
+SC1 = []
+baseLine_SC2 = []
+SC2 = []
+node = baseLine_SC1
+
+# iterate over the folder to monitor the newly created files
+while True:
+    files = os.listdir('images')
+    tiff_files = [file for file in files if file.endswith('.tiff')]
+    
+    # save only new file
+    new_files = list(set(tiff_files) - existing_files)    
+    
+    # print only new file
+    for tiff_file in new_files:
+        print(f"New file created: {tiff_file}")
+
+    # old files update
+    existing_files.update(tiff_files)
+    
+    time.sleep(1)
