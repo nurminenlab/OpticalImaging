@@ -1,37 +1,14 @@
-'''import sys
-import time
-import logging
-from watchdog.observers import Observer
-from watchdog.events import LoggingEventHandler
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO,
-                        format='%(asctime)s - %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S')
-    path = sys.argv[1] if len(sys.argv) > 1 else '.'
-    event_handler = LoggingEventHandler()
-    observer = Observer()
-    observer.schedule(event_handler, path, recursive=True)
-    observer.start()
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        observer.stop()
-
-    observer.join()'''
-
 import os
 import time
+import keyboard
+from ordered_set import OrderedSet
 
 existing_files = set()
-baseLine_SC1 = []
-SC1 = []
-baseLine_SC2 = []
-SC2 = []
-node = baseLine_SC1
-
-# max files
+images_folder = []
+baseLine_SC1 = [] #a
+SC1 = []          #b
+baseLine_SC2 = [] #c
+SC2 = []          #d
 
 # iterate over the folder to monitor the newly created files
 while True:
@@ -40,18 +17,35 @@ while True:
     
     # save only new file
     new_files = list(set(tiff_files) - existing_files)    
-    
+
+
     # print only new file
     for tiff_file in new_files:
         print(f"New file created: {tiff_file}")
+        images_folder.append(tiff_file)
+        for i, num in enumerate(images_folder):   
+            if i % 12 < 3:
+                baseLine_SC1.append(num)
+                baseLine_SC1 = list(OrderedSet(baseLine_SC1))
 
-    # read tiff_file and convert into an array
-    # then check file number
-    # if file number in A then do this 
-    # elseif  file number in B then do that
-    
+            elif i % 12 < 6:
+                SC1.append(num)
+                SC1 = list(OrderedSet(SC1))
+
+            elif i % 12 < 9:
+                baseLine_SC2.append(num)
+                baseLine_SC2 = list(OrderedSet(baseLine_SC2))
+
+            else:
+                SC2.append(num)
+                SC2 = list(OrderedSet(SC2))
 
     # old files update
     existing_files.update(tiff_files)
+
+    if keyboard.is_pressed('x'):
+        print("Exiting loop.")
+        print(baseLine_SC1 ,SC1 ,baseLine_SC2 ,SC2 )
+        break
     
-    time.sleep(1)
+    time.sleep(0.2)
