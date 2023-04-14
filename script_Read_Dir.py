@@ -20,6 +20,8 @@ from PIL import Image
 import time
 from ordered_set import OrderedSet
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 def imageFiles_to_npArray(image_files): # array of img files to np array values
     image_files_array = []
@@ -36,7 +38,14 @@ def imageFiles_to_npArray(image_files): # array of img files to np array values
 
 def normalize(baselineMean, SC_npArray):
 
-    normArray = SC_npArray/baselineMean
+    eps = 0.000000001
+    normArray = SC_npArray/(baselineMean+eps)
+    
+    return normArray
+
+def subt_normalize(baselineMean, SC_npArray):
+
+    normArray = SC_npArray - baselineMean
     
     return normArray
 
@@ -53,6 +62,9 @@ SC2_bin = []
 pointer1 = 1
 pointer2 = 1
 
+plt.ion()
+fig1, ax1 = plt.subplots(1,2)
+fig1.suptitle('SC1 bin mean')
 # iterate over the folder to monitor the newly created files
 while True:
     files = os.listdir('images')
@@ -96,10 +108,18 @@ while True:
             BaseLn_SC1_mean = np.mean(normalize(baseline1_Mean,SC1_npArray),axis=0)
             
             SC1_bin.append(baseline1_Mean)
-            pointer1 = pointer1 +1
+
 
             # calculate the mean of the bin here
-            # plot the image here      
+            SC1_bin_mean = np.mean(np.array(SC1_bin),axis=0)
+            ax1[0].cla()
+            ax1[0].imshow(SC1_bin_mean)
+
+            # plot the image here
+            
+                  
+            pointer1 = pointer1 +1
+
         
         if len(SC2_images)  == parameter*pointer2 : 
             #print(baseLine_SC2_images[-3:])
@@ -113,10 +133,10 @@ while True:
             
             SC2_bin.append(baseline2_Mean)
 
-            pointer2 = pointer2 +1 
 
             # calculate the mean of the bin here
             # plot the image here     
+            pointer2 = pointer2 +1 
             
 
     # old files update
