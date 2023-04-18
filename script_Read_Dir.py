@@ -49,7 +49,6 @@ def subt_normalize(baselineMean, SC_npArray):
     
     return normArray
 
-
 existing_files = set()
 images_folder = []
 baseLine_SC1_images = [] 
@@ -63,8 +62,12 @@ pointer1 = 1
 pointer2 = 1
 
 plt.ion()
-fig1, ax1 = plt.subplots(1,2)
-fig1.suptitle('SC1 bin mean')
+fig, ax = plt.subplots(1,2)
+fig.suptitle('SC1 and SC2 bin mean')
+
+fig1, ax1 = plt.subplots(1,1)
+fig1.suptitle('SC bin mean (after subtraction)')
+
 # iterate over the folder to monitor the newly created files
 while True:
     files = os.listdir('images')
@@ -109,18 +112,19 @@ while True:
             
             SC1_bin.append(baseline1_Mean)
 
-
             # calculate the mean of the bin here
             SC1_bin_mean = np.mean(np.array(SC1_bin),axis=0)
-            ax1[0].cla()
-            ax1[0].imshow(SC1_bin_mean)
 
-            # plot the image here
-            
+            # plot the image here     
+            ax[0].imshow(SC1_bin_mean)
+            ax[0].set_title("SC1 bin")
+            fig.canvas.draw()
+            fig.canvas.flush_events()
+            time.sleep(0.002)          
                   
             pointer1 = pointer1 +1
 
-        
+
         if len(SC2_images)  == parameter*pointer2 : 
             #print(baseLine_SC2_images[-3:])
             #print(SC2_images[-3:])
@@ -133,17 +137,32 @@ while True:
             
             SC2_bin.append(baseline2_Mean)
 
-
             # calculate the mean of the bin here
+            SC2_bin_mean = np.mean(np.array(SC2_bin),axis=0)
+
             # plot the image here     
-            pointer2 = pointer2 +1 
+            ax[1].imshow(SC2_bin_mean)
+            ax[1].set_title("SC2 bin")
+            fig.canvas.draw()
+            fig.canvas.flush_events()
+            time.sleep(0.002)
             
+            pointer2 = pointer2 +1
+
+            # subtract sc1_bin_mean and sc2_bin_mean
+            print("here")
+
+            ax1.imshow(SC1_bin_mean - SC2_bin_mean)
+            ax1.set_title("SC1_bin_mean - SC2_bin_mean")
+            fig1.canvas.draw()
+            fig1.canvas.flush_events()
+            time.sleep(0.002)
+
 
     # old files update
     existing_files.update(tiff_files)
     if keyboard.is_pressed('x'):
         print("Exiting loop.")
-        print(baseLine_SC1_images ,"\n",SC1_images,"\n" ,baseLine_SC2_images,"\n" ,SC2_images )
-        print(np.array(SC1_bin).shape,np.array(SC2_bin).shape)
+        #print(baseLine_SC1_images ,"\n",SC1_images,"\n" ,baseLine_SC2_images,"\n" ,SC2_images )
+        #print(np.array(SC1_bin).shape,np.array(SC2_bin).shape)
         break
-    
